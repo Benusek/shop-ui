@@ -7,15 +7,19 @@ class Input extends StatelessWidget {
   final bool password;
   final Widget? suffix;
   final String? Function(String?)? validator;
+  final Function(String?)? saved;
+  final String? error;
 
   const Input({
     super.key,
     this.labelText = '',
     this.keyboardType = TextInputType.text,
-    this.private = true,
+    this.private = false,
     this.password = false,
     this.suffix,
-    this.validator
+    this.validator,
+    this.saved,
+    this.error
   });
 
   OutlineInputBorder border(Color color) {
@@ -31,6 +35,7 @@ class Input extends StatelessWidget {
       validator: validator,
       obscureText: private,
       keyboardType: keyboardType,
+      onSaved: saved,
       decoration: InputDecoration(
         suffixIcon: suffix,
         contentPadding: EdgeInsets.all(14.0),
@@ -39,9 +44,9 @@ class Input extends StatelessWidget {
         disabledBorder: border(Color(0x8AFFFFFF)),
         focusedErrorBorder: border(Color(0xffef5350)),
         errorBorder: border(Color(0xffef5350)),
-        border: border(Color(0xffef5350)),
-        fillColor: Color(0xFFF5F5F9),
+        fillColor: error == null ? Color(0xFFF5F5F9) : Color(0x20ef5350),
         filled: true,
+        errorText: error,
         floatingLabelBehavior: FloatingLabelBehavior.never,
         labelText: labelText,
         labelStyle: TextStyle(fontSize: 15, color: Color(0xFF939396)),

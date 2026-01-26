@@ -9,6 +9,9 @@ class Input extends StatelessWidget {
   final String? Function(String?)? validator;
   final Function(String?)? saved;
   final String? error;
+  final Function(String?)? changed;
+  final TextEditingController? controller;
+  final Widget? prefix;
 
   const Input({
     super.key,
@@ -17,9 +20,12 @@ class Input extends StatelessWidget {
     this.private = false,
     this.password = false,
     this.suffix,
+    this.prefix,
     this.validator,
     this.saved,
-    this.error
+    this.error,
+    this.changed,
+    this.controller,
   });
 
   OutlineInputBorder border(Color color) {
@@ -35,9 +41,12 @@ class Input extends StatelessWidget {
       validator: validator,
       obscureText: private,
       keyboardType: keyboardType,
+      onChanged: changed,
       onSaved: saved,
+      controller: controller,
       decoration: InputDecoration(
         suffixIcon: suffix,
+        prefixIcon: prefix,
         contentPadding: EdgeInsets.all(14.0),
         enabledBorder: border(Color(0x1f000000)),
         focusedBorder: border(Color(0x40000000)),
@@ -50,7 +59,25 @@ class Input extends StatelessWidget {
         floatingLabelBehavior: FloatingLabelBehavior.never,
         labelText: labelText,
         labelStyle: TextStyle(fontSize: 15, color: Color(0xFF939396)),
-      )
+      ),
+    );
+  }
+}
+
+class SubTitle extends StatelessWidget {
+  final String text;
+
+  const SubTitle({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        color: Color(0xFF939396),
+        fontWeight: FontWeight.w600,
+        fontSize: 17,
+      ),
     );
   }
 }
@@ -91,14 +118,9 @@ class Select extends StatelessWidget {
             enabledBorder: border(Color(0x1f000000)),
             focusedBorder: border(Color(0x1f000000)),
             suffixIcon: Icon(Icons.keyboard_arrow_down),
-            contentPadding: EdgeInsets.all(14)
+            contentPadding: EdgeInsets.all(14),
           ),
-          hint: Text(
-            label,
-            style: TextStyle(
-              color: Color(0xFF939396)
-            )
-          ),
+          hint: Text(label, style: TextStyle(color: Color(0xFF939396))),
           items: items,
           onChanged: func,
         ),
@@ -175,5 +197,66 @@ class Description extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(text, style: TextStyle(color: Color(0xFF939396), fontSize: 14));
+  }
+}
+
+class PromoCard extends StatelessWidget {
+  final String title;
+  final String price;
+  final String? image;
+
+  const PromoCard({
+    super.key,
+    required this.title,
+    required this.price,
+    this.image,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 260,
+      margin: const EdgeInsets.only(right: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xFF7AD7E8),
+            Color(0xFFA7EDE7),
+          ],
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  price,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          //TODO: if image equals null -> error
+          Image.asset(image!)
+        ],
+      ),
+    );
   }
 }

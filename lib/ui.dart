@@ -287,7 +287,9 @@ class Category extends StatelessWidget {
 }
 
 class CardBackground extends StatelessWidget {
-  const CardBackground({super.key});
+  final Widget component;
+
+  const CardBackground({super.key, required this.component});
 
   @override
   Widget build(BuildContext context) {
@@ -299,63 +301,141 @@ class CardBackground extends StatelessWidget {
         border: BoxBorder.all(color: Color(0xFFF4F4F4)),
       ),
       padding: EdgeInsets.all(14),
-      child: CardOrder(),
+      child: component,
     );
   }
 }
 
-// Primary
-class CardOrder extends StatelessWidget {
-  const CardOrder({super.key});
+class CardProject extends StatelessWidget {
+  final Function() func;
+  final String? buttonTitle;
+
+  const CardProject({super.key, required this.func, this.buttonTitle});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return CardBackground(component: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Рубашка Воскресенье для машинного вязания',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
+        Text('Мой первый проект', style: TextStyle(
+          fontSize:  16,
+          fontWeight: FontWeight.w500
+        )),
+        Spacer(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Мужская одежда',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF939396),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  '300 ₽',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-            //TODO: Move small button object to separate class || changed of state (add/added)
-            FilledButton(
-              onPressed: () {},
-              style: FilledButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                backgroundColor: Colors.blueAccent,
-                padding: EdgeInsets.symmetric(horizontal: 15.5, vertical: 10),
-              ),
-              child: Text('Добавить'),
-            ),
+            Text('Прошло 2 дня', style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+              color: Color(0xFF939396)
+            )),
+            SmallButton(func: func, title: buttonTitle)
           ],
-        ),
+        )
       ],
+    ));
+  }
+}
+
+
+// Primary
+class CardOrder extends StatelessWidget {
+  final String gender;
+  final String title;
+  final String price;
+  final bool added;
+  const CardOrder({super.key, required this.gender, required this.title, required this.price, required this.added});
+
+  @override
+  Widget build(BuildContext context) {
+    return CardBackground(
+      component: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            title,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    gender.contains('female')
+                        ? 'Женская одежда'
+                        : 'Мужская одежда',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF939396),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    price,
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              SmallButton(func: () {}, added: added)
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
+
+class SmallButton extends StatelessWidget {
+  final bool added;
+  final Function() func;
+  final String? title;
+
+
+  const SmallButton({super.key, this.added = false, required this.func, this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 100,
+      height: 40,
+      child: FilledButton(
+        onPressed: func,
+        style: FilledButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Colors.blueAccent),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          backgroundColor: added ? Colors.white: Colors.blueAccent,
+          padding: EdgeInsets.symmetric(horizontal: added ? 24.0 : 15.5, vertical: 10),
+        ),
+        child: Text(added ? 'Убрать' : (title ?? 'Добавить'), style: TextStyle(
+          color: added ? Colors.blueAccent : Colors.white,
+          fontSize: 14
+        )),
+      ),
+    );
+  }
+}
+
+class TextMedium extends StatelessWidget {
+  final Color? color;
+  final String text;
+  const TextMedium({super.key, this.color, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(text, style: TextStyle(
+      fontWeight: FontWeight.w500,
+      fontSize: 15,
+      color: color ?? Color(0xFF939396),
+    ));
+  }
+}
+
 
 // TabBar
 class TabNavigation extends StatelessWidget {

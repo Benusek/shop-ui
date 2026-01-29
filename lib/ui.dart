@@ -83,12 +83,14 @@ class SubTitle extends StatelessWidget {
 }
 
 class Select extends StatelessWidget {
+  final String? Function(Object?)? validator;
   final String label;
   final Function(dynamic) func;
   final List<DropdownMenuItem<Object>>? items;
 
   const Select({
     super.key,
+    this.validator,
     required this.label,
     required this.func,
     required this.items,
@@ -111,6 +113,7 @@ class Select extends StatelessWidget {
       child: ButtonTheme(
         alignedDropdown: true,
         child: DropdownButtonFormField(
+          validator: validator,
           dropdownColor: Colors.white,
           elevation: 1,
           borderRadius: BorderRadius.circular(10),

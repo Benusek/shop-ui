@@ -12,6 +12,7 @@ class Input extends StatelessWidget {
   final Function(String?)? changed;
   final TextEditingController? controller;
   final Widget? prefix;
+  final Function(String?)? submitted;
 
   const Input({
     super.key,
@@ -26,6 +27,7 @@ class Input extends StatelessWidget {
     this.error,
     this.changed,
     this.controller,
+    this.submitted
   });
 
   OutlineInputBorder border(Color color) {
@@ -43,6 +45,7 @@ class Input extends StatelessWidget {
       keyboardType: keyboardType,
       onChanged: changed,
       onSaved: saved,
+      onFieldSubmitted: submitted,
       controller: controller,
       decoration: InputDecoration(
         suffixIcon: suffix,

@@ -208,13 +208,13 @@ class Description extends StatelessWidget {
 
 class PromoCard extends StatelessWidget {
   final String title;
-  final String price;
+  final String? price;
   final String? image;
 
   const PromoCard({
     super.key,
     required this.title,
-    required this.price,
+    this.price,
     this.image,
   });
 
@@ -245,14 +245,14 @@ class PromoCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                Text(
-                  price,
+                ?price != null ? Text(
+                  '$price ₽'!,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
+                ): null,
               ],
             ),
           ),
@@ -294,8 +294,9 @@ class Category extends StatelessWidget {
 
 class CardBackground extends StatelessWidget {
   final Widget component;
+  final Function() func;
 
-  const CardBackground({super.key, required this.component});
+  const CardBackground({super.key, required this.component, required this.func});
 
   @override
   Widget build(BuildContext context) {
@@ -307,20 +308,26 @@ class CardBackground extends StatelessWidget {
         border: BoxBorder.all(color: Color(0xFFF4F4F4)),
       ),
       padding: EdgeInsets.all(14),
-      child: component,
+      child: InkWell(
+        onTap: func,
+        child: component,
+      ),
     );
   }
 }
 
 class CardProject extends StatelessWidget {
   final Function() func;
+  final Function() cardFunc;
   final String? buttonTitle;
 
-  const CardProject({super.key, required this.func, this.buttonTitle});
+  const CardProject({super.key, required this.func, this.buttonTitle, required this.cardFunc});
 
   @override
   Widget build(BuildContext context) {
-    return CardBackground(component: Column(
+    return CardBackground(
+      func: cardFunc,
+      component: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Мой первый проект', style: TextStyle(
@@ -351,11 +358,13 @@ class CardOrder extends StatelessWidget {
   final String title;
   final String price;
   final bool added;
-  const CardOrder({super.key, required this.gender, required this.title, required this.price, required this.added});
+  final Function() cardFunc;
+  const CardOrder({super.key, required this.gender, required this.title, required this.price, required this.added, required this.cardFunc});
 
   @override
   Widget build(BuildContext context) {
     return CardBackground(
+      func: cardFunc,
       component: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,

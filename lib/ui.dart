@@ -27,7 +27,7 @@ class Input extends StatelessWidget {
     this.error,
     this.changed,
     this.controller,
-    this.submitted
+    this.submitted,
   });
 
   OutlineInputBorder border(Color color) {
@@ -211,12 +211,7 @@ class PromoCard extends StatelessWidget {
   final String? price;
   final String? image;
 
-  const PromoCard({
-    super.key,
-    required this.title,
-    this.price,
-    this.image,
-  });
+  const PromoCard({super.key, required this.title, this.price, this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -245,18 +240,20 @@ class PromoCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                ?price != null ? Text(
-                  '$price ₽'!,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ): null,
+                ?price != null
+                    ? Text(
+                        '$price ₽',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    : null,
               ],
             ),
           ),
-          ?image != null ? Image.asset(image!) : null,
+          ?image != null ? Image.network(image!) : null,
         ],
       ),
     );
@@ -296,7 +293,11 @@ class CardBackground extends StatelessWidget {
   final Widget component;
   final Function() func;
 
-  const CardBackground({super.key, required this.component, required this.func});
+  const CardBackground({
+    super.key,
+    required this.component,
+    required this.func,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -308,10 +309,8 @@ class CardBackground extends StatelessWidget {
         border: BoxBorder.all(color: Color(0xFFF4F4F4)),
       ),
       padding: EdgeInsets.all(14),
-      child: InkWell(
-        onTap: func,
-        child: component,
-      ),
+      //TODO: Ripple effect going to over from border ListView
+      child: InkWell(onTap: func, child: component),
     );
   }
 }
@@ -321,36 +320,44 @@ class CardProject extends StatelessWidget {
   final Function() cardFunc;
   final String? buttonTitle;
 
-  const CardProject({super.key, required this.func, this.buttonTitle, required this.cardFunc});
+  const CardProject({
+    super.key,
+    required this.func,
+    this.buttonTitle,
+    required this.cardFunc,
+  });
 
   @override
   Widget build(BuildContext context) {
     return CardBackground(
       func: cardFunc,
       component: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Мой первый проект', style: TextStyle(
-          fontSize:  16,
-          fontWeight: FontWeight.w500
-        )),
-        Spacer(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Прошло 2 дня', style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-              color: Color(0xFF939396)
-            )),
-            SmallButton(func: func, title: buttonTitle)
-          ],
-        )
-      ],
-    ));
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Мой первый проект',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+          Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Прошло 2 дня',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Color(0xFF939396),
+                ),
+              ),
+              SmallButton(func: func, title: buttonTitle),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
-
 
 // Primary
 class CardOrder extends StatelessWidget {
@@ -359,7 +366,15 @@ class CardOrder extends StatelessWidget {
   final String price;
   final bool added;
   final Function() cardFunc;
-  const CardOrder({super.key, required this.gender, required this.title, required this.price, required this.added, required this.cardFunc});
+
+  const CardOrder({
+    super.key,
+    required this.gender,
+    required this.title,
+    required this.price,
+    required this.added,
+    required this.cardFunc,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -395,7 +410,7 @@ class CardOrder extends StatelessWidget {
                   ),
                 ],
               ),
-              SmallButton(func: () {}, added: added)
+              SmallButton(func: () {}, added: added),
             ],
           ),
         ],
@@ -409,8 +424,12 @@ class SmallButton extends StatelessWidget {
   final Function() func;
   final String? title;
 
-
-  const SmallButton({super.key, this.added = false, required this.func, this.title});
+  const SmallButton({
+    super.key,
+    this.added = false,
+    required this.func,
+    this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -424,13 +443,19 @@ class SmallButton extends StatelessWidget {
             side: BorderSide(color: Colors.blueAccent),
             borderRadius: BorderRadius.circular(10),
           ),
-          backgroundColor: added ? Colors.white: Colors.blueAccent,
-          padding: EdgeInsets.symmetric(horizontal: added ? 24.0 : 15.5, vertical: 10),
+          backgroundColor: added ? Colors.white : Colors.blueAccent,
+          padding: EdgeInsets.symmetric(
+            horizontal: added ? 24.0 : 15.5,
+            vertical: 10,
+          ),
         ),
-        child: Text(added ? 'Убрать' : (title ?? 'Добавить'), style: TextStyle(
-          color: added ? Colors.blueAccent : Colors.white,
-          fontSize: 14
-        )),
+        child: Text(
+          added ? 'Убрать' : (title ?? 'Добавить'),
+          style: TextStyle(
+            color: added ? Colors.blueAccent : Colors.white,
+            fontSize: 14,
+          ),
+        ),
       ),
     );
   }
@@ -439,18 +464,21 @@ class SmallButton extends StatelessWidget {
 class TextMedium extends StatelessWidget {
   final Color? color;
   final String text;
+
   const TextMedium({super.key, this.color, required this.text});
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: TextStyle(
-      fontWeight: FontWeight.w500,
-      fontSize: 15,
-      color: color ?? Color(0xFF939396),
-    ));
+    return Text(
+      text,
+      style: TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
+        color: color ?? Color(0xFF939396),
+      ),
+    );
   }
 }
-
 
 // TabBar
 class TabNavigation extends StatelessWidget {
@@ -500,6 +528,87 @@ class TabNavigation extends StatelessWidget {
           ),
         );
       }),
+    );
+  }
+}
+
+class BottomSheet extends StatelessWidget {
+  final String title;
+  final String description;
+  final String weight;
+  final String price;
+
+  const BottomSheet({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.weight,
+    required this.price,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 24, 20, 40),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Heading(text: title),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(Icons.close),
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.grey.shade50,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Описание',
+              style: TextStyle(
+                color: Color(0xFF939396),
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(description),
+            SizedBox(height: 8),
+            Text(
+              'Примерный расход',
+              style: TextStyle(color: Color(0xFF939396), fontSize: 14),
+            ),
+            Text(
+              '$weight г',
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            ),
+            SizedBox(height: 20),
+            SizedBox(
+              height: 56,
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: () => print('Добавлено'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                  ),
+                ),
+                child: Text(
+                  'Добавить за $price ₽',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

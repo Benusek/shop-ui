@@ -538,7 +538,7 @@ class BottomSheet extends StatelessWidget {
   final String title;
   final String description;
   final String weight;
-  final String price;
+  final int price;
 
   const BottomSheet({
     super.key,
@@ -616,7 +616,13 @@ class BottomSheet extends StatelessWidget {
 }
 
 class CartCard extends StatelessWidget {
-  const CartCard({super.key});
+  final String title;
+  final int price;
+  final int count;
+  final Function() plusFunc;
+  final Function() minusFunc;
+
+  const CartCard({super.key, required this.title, required this.price, required this.count, required this.plusFunc, required this.minusFunc});
 
   @override
   Widget build(BuildContext context) {
@@ -633,7 +639,7 @@ class CartCard extends StatelessWidget {
                 SizedBox(
                   width: 200,
                   child: Text(
-                    'Рубашка воскресенье для машинного дизайна',
+                    title,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
@@ -642,6 +648,7 @@ class CartCard extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(Icons.close),
+                  highlightColor: Colors.transparent,
                   onPressed: () {},
                 ),
               ],
@@ -650,7 +657,7 @@ class CartCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '300 ₽',
+                  '$price ₽',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
@@ -662,7 +669,7 @@ class CartCard extends StatelessWidget {
                     MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '1 штука',
+                        '$count штук',
                         style: TextStyle(fontSize: 15),
                       ),
                       SizedBox(width: 42),
@@ -673,7 +680,7 @@ class CartCard extends StatelessWidget {
                           minWidth: 32.0,
                           minHeight: 32.0,
                         ),
-                        onPressed: () {},
+                        onPressed: plusFunc,
                         elevation: 0,
                         fillColor: Colors.grey[100],
                         shape: RoundedRectangleBorder(
@@ -698,7 +705,7 @@ class CartCard extends StatelessWidget {
                               bottomRight: Radius.circular(10)
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: minusFunc,
                         elevation: 0,
                         fillColor: Colors.grey[100],
                         child: Icon(Icons.remove, size: 20.0),

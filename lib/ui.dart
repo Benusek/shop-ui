@@ -301,16 +301,18 @@ class CardBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 140,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
-        border: BoxBorder.all(color: Color(0xFFF4F4F4)),
+    return Material(
+      child: Container(
+        height: 140,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
+          border: BoxBorder.all(color: Color(0xFFF4F4F4)),
+        ),
+        padding: EdgeInsets.all(14),
+        //TODO: Ripple effect going to over from border ListView
+        child: InkWell(onTap: func, child: component),
       ),
-      padding: EdgeInsets.all(14),
-      //TODO: Ripple effect going to over from border ListView
-      child: InkWell(onTap: func, child: component),
     );
   }
 }
@@ -612,3 +614,105 @@ class BottomSheet extends StatelessWidget {
     );
   }
 }
+
+class CartCard extends StatelessWidget {
+  const CartCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: CardBackground(
+        component: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 200,
+                  child: Text(
+                    'Рубашка воскресенье для машинного дизайна',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '300 ₽',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                IntrinsicHeight(
+                  child: Row(
+                    mainAxisAlignment:
+                    MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '1 штука',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      SizedBox(width: 42),
+                      RawMaterialButton(
+                        materialTapTargetSize:
+                        MaterialTapTargetSize.shrinkWrap,
+                        constraints: BoxConstraints(
+                          minWidth: 32.0,
+                          minHeight: 32.0,
+                        ),
+                        onPressed: () {},
+                        elevation: 0,
+                        fillColor: Colors.grey[100],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              bottomLeft: Radius.circular(10)
+                          ),
+                        ),
+                        child: Icon(Icons.add, size: 20.0),
+                      ),
+                      VerticalDivider(color: Colors.grey[200], thickness: 1, width: 0.5),
+                      RawMaterialButton(
+                        materialTapTargetSize:
+                        MaterialTapTargetSize.shrinkWrap,
+                        constraints: BoxConstraints(
+                          minWidth: 32.0,
+                          minHeight: 32.0,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10)
+                          ),
+                        ),
+                        onPressed: () {},
+                        elevation: 0,
+                        fillColor: Colors.grey[100],
+                        child: Icon(Icons.remove, size: 20.0),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        func: () {},
+      ),
+    );
+  }
+}
+

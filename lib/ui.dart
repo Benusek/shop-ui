@@ -368,7 +368,7 @@ class CardOrder extends StatelessWidget {
   final String price;
   final bool added;
   final Function() cardFunc;
-  final Future<void> buttonFunc;
+  final Function() buttonFunc;
 
   const CardOrder({
     super.key,
@@ -414,7 +414,7 @@ class CardOrder extends StatelessWidget {
                   ),
                 ],
               ),
-              SmallButton(func: () => buttonFunc, added: added),
+              SmallButton(func: buttonFunc, added: added),
             ],
           ),
         ],
@@ -540,6 +540,8 @@ class BottomSheet extends StatelessWidget {
   final String description;
   final String weight;
   final int price;
+  final bool added;
+  final Function() buttonFunc;
 
   const BottomSheet({
     super.key,
@@ -547,6 +549,8 @@ class BottomSheet extends StatelessWidget {
     required this.description,
     required this.weight,
     required this.price,
+    required this.added,
+    required this.buttonFunc
   });
 
   @override
@@ -596,7 +600,7 @@ class BottomSheet extends StatelessWidget {
               height: 56,
               width: double.infinity,
               child: FilledButton(
-                onPressed: () => print('Добавлено'),
+                onPressed: buttonFunc,
                 style: FilledButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
                   shape: RoundedRectangleBorder(
@@ -604,7 +608,7 @@ class BottomSheet extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'Добавить за $price ₽',
+                  added ? 'Убрать' : 'Добавить за $price ₽',
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
                 ),
               ),
@@ -622,8 +626,9 @@ class CartCard extends StatelessWidget {
   final int count;
   final Function() plusFunc;
   final Function() minusFunc;
+  final Function() deleteFunc;
 
-  const CartCard({super.key, required this.title, required this.price, required this.count, required this.plusFunc, required this.minusFunc});
+  const CartCard({super.key, required this.title, required this.price, required this.count, required this.plusFunc, required this.minusFunc, required this.deleteFunc});
 
   @override
   Widget build(BuildContext context) {
@@ -650,7 +655,7 @@ class CartCard extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.close),
                   highlightColor: Colors.transparent,
-                  onPressed: () {},
+                  onPressed: deleteFunc,
                 ),
               ],
             ),

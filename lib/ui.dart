@@ -368,6 +368,7 @@ class CardOrder extends StatelessWidget {
   final String price;
   final bool added;
   final Function() cardFunc;
+  final Future<void> buttonFunc;
 
   const CardOrder({
     super.key,
@@ -376,6 +377,7 @@ class CardOrder extends StatelessWidget {
     required this.price,
     required this.added,
     required this.cardFunc,
+    required this.buttonFunc
   });
 
   @override
@@ -412,7 +414,7 @@ class CardOrder extends StatelessWidget {
                   ),
                 ],
               ),
-              SmallButton(func: () {}, added: added),
+              SmallButton(func: () => buttonFunc, added: added),
             ],
           ),
         ],
@@ -436,7 +438,6 @@ class SmallButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100,
       height: 40,
       child: FilledButton(
         onPressed: func,

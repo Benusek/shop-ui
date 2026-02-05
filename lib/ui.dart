@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'custom_color.dart';
 
 class Input extends StatelessWidget {
   final String labelText;
@@ -51,12 +52,12 @@ class Input extends StatelessWidget {
         suffixIcon: suffix,
         prefixIcon: prefix,
         contentPadding: EdgeInsets.all(14.0),
-        enabledBorder: border(Color(0x1f000000)),
-        focusedBorder: border(Color(0x40000000)),
-        disabledBorder: border(Color(0x8AFFFFFF)),
-        focusedErrorBorder: border(Color(0xffef5350)),
-        errorBorder: border(Color(0xffef5350)),
-        fillColor: error == null ? Color(0xFFF5F5F9) : Color(0x20ef5350),
+        enabledBorder: border(CustomColor.inputStr),
+        focusedBorder: border(CustomColor.inputStr),
+        disabledBorder: border(Colors.grey),
+        focusedErrorBorder: border(CustomColor.error),
+        errorBorder: border(CustomColor.error),
+        fillColor: error == null ? CustomColor.inputBg : Colors.red.shade100,
         filled: true,
         errorText: error,
         floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -178,13 +179,13 @@ class CompletedButton extends StatelessWidget {
       child: TextButton(
         onPressed: func,
         style: TextButton.styleFrom(
-          disabledBackgroundColor: Colors.blueAccent.shade100,
-          disabledForegroundColor: Colors.white,
+          disabledBackgroundColor: CustomColor.accentInactive,
+          disabledForegroundColor: CustomColor.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          backgroundColor: Colors.blueAccent,
-          foregroundColor: Colors.white,
+          backgroundColor: CustomColor.accent,
+          foregroundColor: CustomColor.white,
         ),
         child: Text(
           text,
@@ -222,7 +223,7 @@ class PromoCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: const LinearGradient(
-          colors: [Color(0xFF7AD7E8), Color(0xFFA7EDE7)],
+          colors: [CustomColor.gradientStart, CustomColor.gradientEnd],
         ),
       ),
       child: Row(
@@ -234,7 +235,7 @@ class PromoCard extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: CustomColor.white,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
@@ -244,7 +245,7 @@ class PromoCard extends StatelessWidget {
                     ? Text(
                         '$price ₽',
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: CustomColor.white,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
@@ -277,13 +278,13 @@ class Category extends StatelessWidget {
     return FilledButton(
       style: FilledButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        backgroundColor: isSelected ? Colors.blueAccent : Color(0xFFF5F5F9),
+        backgroundColor: isSelected ? CustomColor.accent : CustomColor.white,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
       ),
       onPressed: func,
       child: Text(
         title,
-        style: TextStyle(color: isSelected ? Colors.white : Color(0xFF7E7E9A)),
+        style: TextStyle(color: isSelected ? CustomColor.white : CustomColor.description),
       ),
     );
   }
@@ -307,7 +308,7 @@ class CardBackground extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: Colors.white,
-          border: BoxBorder.all(color: Color(0xFFF4F4F4)),
+          border: BoxBorder.all(color: CustomColor.inputStr),
         ),
         padding: EdgeInsets.all(14),
         //TODO: Ripple effect going to over from border ListView
@@ -349,7 +350,7 @@ class CardProject extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
-                  color: Color(0xFF939396),
+                  color: CustomColor.placeholder,
                 ),
               ),
               SmallButton(func: func, title: buttonTitle),
@@ -404,7 +405,7 @@ class CardOrder extends StatelessWidget {
                         : 'Мужская одежда',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Color(0xFF939396),
+                      color: CustomColor.placeholder,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -443,10 +444,10 @@ class SmallButton extends StatelessWidget {
         onPressed: func,
         style: FilledButton.styleFrom(
           shape: RoundedRectangleBorder(
-            side: BorderSide(color: Colors.blueAccent),
+            side: BorderSide(color: CustomColor.accent),
             borderRadius: BorderRadius.circular(10),
           ),
-          backgroundColor: added ? Colors.white : Colors.blueAccent,
+          backgroundColor: added ? Colors.white : CustomColor.accent,
           padding: EdgeInsets.symmetric(
             horizontal: added ? 24.0 : 15.5,
             vertical: 10,
@@ -455,7 +456,7 @@ class SmallButton extends StatelessWidget {
         child: Text(
           added ? 'Убрать' : (title ?? 'Добавить'),
           style: TextStyle(
-            color: added ? Colors.blueAccent : Colors.white,
+            color: added ? CustomColor.accent : Colors.white,
             fontSize: 14,
           ),
         ),
@@ -477,7 +478,7 @@ class TextMedium extends StatelessWidget {
       style: TextStyle(
         fontWeight: FontWeight.w500,
         fontSize: 15,
-        color: color ?? Color(0xFF939396),
+        color: color ?? CustomColor.placeholder,
       ),
     );
   }
@@ -503,7 +504,7 @@ class TabNavigation extends StatelessWidget {
         return Expanded(
           child: Container(
             decoration: BoxDecoration(
-              border: Border(top: BorderSide(color: Colors.grey.shade200)),
+              border: Border(top: BorderSide(color: CustomColor.inputStr)),
             ),
             child: InkWell(
               onTap: () => func(index),
@@ -513,7 +514,7 @@ class TabNavigation extends StatelessWidget {
                   Icon(
                     items[index]['icon'],
                     color: selectedIndex == index
-                        ? Colors.blueAccent
+                        ? CustomColor.accent
                         : Colors.grey,
                   ),
                   Text(
@@ -521,7 +522,7 @@ class TabNavigation extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12,
                       color: selectedIndex == index
-                          ? Colors.blueAccent
+                          ? CustomColor.accent
                           : Colors.grey,
                     ),
                   ),
@@ -589,7 +590,7 @@ class BottomSheet extends StatelessWidget {
             SizedBox(height: 8),
             Text(
               'Примерный расход',
-              style: TextStyle(color: Color(0xFF939396), fontSize: 14),
+              style: TextStyle(color: CustomColor.placeholder, fontSize: 14),
             ),
             Text(
               '$weight г',
@@ -602,7 +603,7 @@ class BottomSheet extends StatelessWidget {
               child: FilledButton(
                 onPressed: buttonFunc,
                 style: FilledButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
+                  backgroundColor: CustomColor.accent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadiusGeometry.circular(10),
                   ),
@@ -688,7 +689,7 @@ class CartCard extends StatelessWidget {
                         ),
                         onPressed: plusFunc,
                         elevation: 0,
-                        fillColor: Colors.grey[100],
+                        fillColor: CustomColor.cardStroke,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10),
@@ -697,7 +698,7 @@ class CartCard extends StatelessWidget {
                         ),
                         child: Icon(Icons.add, size: 20.0),
                       ),
-                      VerticalDivider(color: Colors.grey[200], thickness: 1, width: 0.5),
+                      VerticalDivider(color: CustomColor.black, thickness: 1, width: 0.5),
                       RawMaterialButton(
                         materialTapTargetSize:
                         MaterialTapTargetSize.shrinkWrap,
@@ -713,7 +714,7 @@ class CartCard extends StatelessWidget {
                         ),
                         onPressed: minusFunc,
                         elevation: 0,
-                        fillColor: Colors.grey[100],
+                        fillColor: CustomColor.cardStroke,
                         child: Icon(Icons.remove, size: 20.0),
                       ),
                     ],

@@ -14,6 +14,7 @@ class Input extends StatelessWidget {
   final TextEditingController? controller;
   final Widget? prefix;
   final Function(String?)? submitted;
+  final Function()? tap;
 
   const Input({
     super.key,
@@ -29,6 +30,7 @@ class Input extends StatelessWidget {
     this.changed,
     this.controller,
     this.submitted,
+    this.tap,
   });
 
   OutlineInputBorder border(Color color) {
@@ -46,6 +48,7 @@ class Input extends StatelessWidget {
       keyboardType: keyboardType,
       onChanged: changed,
       onSaved: saved,
+      onTap: tap,
       onFieldSubmitted: submitted,
       controller: controller,
       decoration: InputDecoration(
@@ -62,7 +65,7 @@ class Input extends StatelessWidget {
         errorText: error,
         floatingLabelBehavior: FloatingLabelBehavior.never,
         labelText: labelText,
-        labelStyle: TextStyle(fontSize: 15, color: Color(0xFF939396)),
+        labelStyle: TextStyle(fontSize: 15, color: CustomColor.placeholder),
       ),
     );
   }
@@ -111,7 +114,7 @@ class Select extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFFF5F5F9),
+        color: CustomColor.inputBg,
         borderRadius: BorderRadius.circular(8),
       ),
       child: ButtonTheme(
@@ -122,12 +125,19 @@ class Select extends StatelessWidget {
           elevation: 1,
           borderRadius: BorderRadius.circular(10),
           decoration: InputDecoration(
-            enabledBorder: border(Color(0x1f000000)),
-            focusedBorder: border(Color(0x1f000000)),
+            enabledBorder: border(CustomColor.inputStr),
+            focusedBorder: border(CustomColor.inputStr),
             suffixIcon: Icon(Icons.keyboard_arrow_down),
             contentPadding: EdgeInsets.all(14),
           ),
-          hint: Text(label, style: TextStyle(color: Color(0xFF939396))),
+          hint: Text(
+            label,
+            style: TextStyle(
+              fontSize: 15,
+              color: CustomColor.placeholder,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
           items: items,
           onChanged: func,
         ),
@@ -284,7 +294,9 @@ class Category extends StatelessWidget {
       onPressed: func,
       child: Text(
         title,
-        style: TextStyle(color: isSelected ? CustomColor.white : CustomColor.description),
+        style: TextStyle(
+          color: isSelected ? CustomColor.white : CustomColor.description,
+        ),
       ),
     );
   }
@@ -321,10 +333,14 @@ class CardBackground extends StatelessWidget {
 class CardProject extends StatelessWidget {
   final Function() func;
   final Function() cardFunc;
+  final String title;
+  final String date;
   final String? buttonTitle;
 
   const CardProject({
     super.key,
+    required this.title,
+    required this.date,
     required this.func,
     this.buttonTitle,
     required this.cardFunc,
@@ -338,7 +354,7 @@ class CardProject extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Мой первый проект',
+            title,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
           Spacer(),
@@ -346,7 +362,7 @@ class CardProject extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Прошло 2 дня',
+                date,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
@@ -378,7 +394,7 @@ class CardOrder extends StatelessWidget {
     required this.price,
     required this.added,
     required this.cardFunc,
-    required this.buttonFunc
+    required this.buttonFunc,
   });
 
   @override
@@ -551,7 +567,7 @@ class BottomSheet extends StatelessWidget {
     required this.weight,
     required this.price,
     required this.added,
-    required this.buttonFunc
+    required this.buttonFunc,
   });
 
   @override
@@ -629,7 +645,15 @@ class CartCard extends StatelessWidget {
   final Function() minusFunc;
   final Function() deleteFunc;
 
-  const CartCard({super.key, required this.title, required this.price, required this.count, required this.plusFunc, required this.minusFunc, required this.deleteFunc});
+  const CartCard({
+    super.key,
+    required this.title,
+    required this.price,
+    required this.count,
+    required this.plusFunc,
+    required this.minusFunc,
+    required this.deleteFunc,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -647,10 +671,7 @@ class CartCard extends StatelessWidget {
                   width: 200,
                   child: Text(
                     title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                   ),
                 ),
                 IconButton(
@@ -665,24 +686,16 @@ class CartCard extends StatelessWidget {
               children: [
                 Text(
                   '$price ₽',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                 ),
                 IntrinsicHeight(
                   child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        '$count штук',
-                        style: TextStyle(fontSize: 15),
-                      ),
+                      Text('$count штук', style: TextStyle(fontSize: 15)),
                       SizedBox(width: 42),
                       RawMaterialButton(
-                        materialTapTargetSize:
-                        MaterialTapTargetSize.shrinkWrap,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         constraints: BoxConstraints(
                           minWidth: 32.0,
                           minHeight: 32.0,
@@ -692,24 +705,27 @@ class CartCard extends StatelessWidget {
                         fillColor: CustomColor.cardStroke,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              bottomLeft: Radius.circular(10)
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
                           ),
                         ),
                         child: Icon(Icons.add, size: 20.0),
                       ),
-                      VerticalDivider(color: CustomColor.black, thickness: 1, width: 0.5),
+                      VerticalDivider(
+                        color: CustomColor.black,
+                        thickness: 1,
+                        width: 0.5,
+                      ),
                       RawMaterialButton(
-                        materialTapTargetSize:
-                        MaterialTapTargetSize.shrinkWrap,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         constraints: BoxConstraints(
                           minWidth: 32.0,
                           minHeight: 32.0,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10)
+                            topRight: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
                           ),
                         ),
                         onPressed: minusFunc,
@@ -729,4 +745,3 @@ class CartCard extends StatelessWidget {
     );
   }
 }
-
